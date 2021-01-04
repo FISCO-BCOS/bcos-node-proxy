@@ -1,3 +1,18 @@
+.gradle/
+.idea/
+log/
+build
+bcos-node-proxy.iml
+
+## eclipse ##
+.classpath
+.project
+.settings/
+bin/
+out/
+dist/
+src/main/resources/
+
 # Compiled class file
 *.class
 
@@ -11,7 +26,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear

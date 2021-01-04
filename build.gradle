@@ -1,0 +1,97 @@
+// Apply the java-library plugin to add support for Java Library
+plugins {
+    id 'java'
+    id 'idea'
+    id 'java-library'
+    id 'jacoco'
+    id 'com.github.sherter.google-java-format' version '0.8'
+}
+println("Notice: current gradle version is " + gradle.gradleVersion)
+// Additional attribute definition
+ext {
+    // java sdk version
+    bcosSDKVersion = "2.7.2-SNAPSHOT"
+}
+
+archivesBaseName = 'bcos-node-proxy'
+version = '1.0.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
+}
+
+googleJavaFormat {
+    options style: 'AOSP'
+    source = sourceSets*.allJava
+    include '**/*.java'
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 30, 'seconds'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+    maven { url "https://oss.sonatype.org/service/local/staging/deploy/maven2"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+	compile ("org.fisco-bcos.java-sdk:fisco-bcos-java-sdk:${bcosSDKVersion}")
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+jar {
+    destinationDir file('dist/apps')
+    archiveName project.name + '.jar'
+    exclude '**/*.xml'
+    exclude '**/*.properties'
+
+    doLast {
+        copy {
+            from configurations.runtime
+            into 'dist/lib'
+        }
+        copy {
+            from file('src/test/resources')
+            into 'dist/conf'
+        }
+        copy {
+            from file('start.sh')
+            into 'dist'
+        }
+        copy {
+            from file('stop.sh')
+            into 'dist'
+        }
+    }
+}
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+check.dependsOn jacocoTestReport
