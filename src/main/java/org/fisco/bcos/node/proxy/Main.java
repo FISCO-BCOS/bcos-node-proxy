@@ -12,7 +12,7 @@ public class Main {
                 Main.class.getClassLoader().getResource(serverConfigName).getPath();
         Server server = new Server(clientConfigPath, serverConfigFile);
         if (server.start()) {
-            System.out.println("Start proxy server successfully");
+            System.out.println("Start proxy server successfully, listen to port: " + server.serverConfigOption.getNetworkConfig().getListenPort());
         } else {
             System.out.println("Start proxy server failed");
             return;
