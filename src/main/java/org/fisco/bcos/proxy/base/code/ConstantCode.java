@@ -40,7 +40,7 @@ public class ConstantCode {
             RetCode.mark(200101, "unsupported rpc method");
     public static final RetCode INVALID_GROUPID = RetCode.mark(200102, "invalid groupId");
     public static final RetCode INSIDE_JSON_PARSER_ERROR =
-            RetCode.mark(200102, "inside json parser error");
+            RetCode.mark(200103, "inside json parser error");
 
     /* param exception */
     public static final RetCode PARAM_EXCEPTION = RetCode.mark(300000, "param exception");
