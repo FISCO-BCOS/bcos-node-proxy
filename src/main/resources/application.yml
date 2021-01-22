@@ -1,0 +1,13 @@
+# Config for Proxy
+
+#server config
+server:
+  port: 8170
+  servlet:
+    context-path: /Bcos-node-proxy
+
+#log config
+logging:
+  config: classpath:log4j2ForProxy.xml
+  level:
+    org.fisco.bcos.proxy: info
