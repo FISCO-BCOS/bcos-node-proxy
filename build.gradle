@@ -1,0 +1,118 @@
+plugins {
+    id 'com.github.sherter.google-java-format' version '0.8'
+}
+
+group = 'org.fisco.bcos.proxy'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+googleJavaFormat {
+    options style: 'AOSP'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+    maven { url 'https://dl.bintray.com/ethereum/maven/' }
+    mavenLocal()
+    mavenCentral()
+}
+
+def springboot_version="2.3.1.RELEASE"
+List springboot = [
+     "org.springframework.boot:spring-boot-starter-web:$springboot_version",
+     "org.springframework.boot:spring-boot-starter-log4j2:$springboot_version",
+//     "org.springframework.boot:spring-boot-starter-security:$springboot_version",
+     "org.springframework.boot:spring-boot-starter-validation:$springboot_version"
+]
+
+List lombok = [
+    "org.projectlombok:lombok:1.18.12"
+]
+
+List test = [
+    "org.springframework.boot:spring-boot-starter-test:$springboot_version"
+]
+
+
+dependencies {
+    compile springboot
+    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2"
+    compile "org.apache.commons:commons-lang3:3.10"
+//    compile "mysql:mysql-connector-java:8.0.13"
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+    compile 'org.fisco-bcos.java-sdk:java-sdk:2.7.0'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    compile lombok
+
+    testCompile test
+}
+
+configurations {
+    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    all*.exclude group: 'log4j', module: 'log4j'
+    all*.exclude group: 'org.ow2.asm', module: 'asm'
+    all*.exclude group: 'jline', module: 'jline'
+    all*.exclude group: 'com.google.protobuf', module: 'protobuf-java'
+    all*.exclude group: 'javax.annotation', module: 'javax.annotation-api'
+
+    all*.resolutionStrategy {
+        force 'mysql:mysql-connector-java:8.0.13'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+clean {
+    delete 'dist'
+    delete 'build'
+    delete 'log'
+}
+
+
+jar {
+    destinationDir file('dist/apps')
+    archiveName project.name + '.jar'
+    exclude '**/*.xml'
+    exclude '**/*.yml'
+    exclude '**/*.properties'
+
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/conf_template'
+        }
+        copy {
+            from file('script/')
+            into 'dist/script'
+        }
+        copy {
+            from configurations.runtime
+            into 'dist/lib'
+        }
+        copy {
+            from file('.').listFiles().findAll{File f -> (f.name.endsWith('.sh') || f.name.endsWith('.env'))}
+            into 'dist'
+        }
+    }
+}
