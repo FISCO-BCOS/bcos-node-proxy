@@ -23,13 +23,15 @@ import org.fisco.bcos.proxy.rpc.entity.JsonRpcRequest;
 import org.fisco.bcos.proxy.rpc.entity.JsonRpcResponse;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
+import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
+import org.fisco.bcos.sdk.client.protocol.response.BcosTransactionReceipt;
 import org.fisco.bcos.sdk.client.protocol.response.BlockNumber;
 import org.fisco.bcos.sdk.client.protocol.response.Call;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.springframework.stereotype.Service;
 
-/** services for account data. */
+/** services for rpc. */
 @Log4j2
 @Service
 public class RPCService {
@@ -51,7 +53,7 @@ public class RPCService {
     /** getBlockNumber. */
     public BaseResponse getBlockNumber(JsonRpcRequest info, Client client)
             throws BcosNodeProxyException {
-        log.info("start getClientVersion");
+        log.info("start getBlockNumber");
         BaseResponse baseResponse = new BaseResponse(ConstantCode.SUCCESS);
         BlockNumber blockNumber = client.getBlockNumber();
         JsonRpcResponse jsonRpcResponse = new JsonRpcResponse();
@@ -65,7 +67,7 @@ public class RPCService {
     /** sendRawTransaction. */
     public BaseResponse sendRawTransaction(JsonRpcRequest info, Client client)
             throws BcosNodeProxyException {
-        log.info("start getClientVersion");
+        log.info("start sendRawTransaction");
         List<Object> params = info.getParams();
         if (params.size() != 2) {
             log.error("the size of `JsonRpcRequest.params` should be 2");
@@ -84,7 +86,7 @@ public class RPCService {
 
     /** call. */
     public BaseResponse call(JsonRpcRequest info, Client client) throws BcosNodeProxyException {
-        log.info("start getClientVersion");
+        log.info("start call");
         List<Object> params = info.getParams();
         if (params.size() != 2) {
             log.error("the size of `JsonRpcRequest.params` should be 2");
@@ -99,6 +101,46 @@ public class RPCService {
         jsonRpcResponse.setId(info.getId());
         jsonRpcResponse.setJsonrpc(info.getJsonrpc());
         jsonRpcResponse.setResult(callFuncRet.getResult());
+        baseResponse.setData(jsonRpcResponse);
+        return baseResponse;
+    }
+
+    /** getTransactionByHash. */
+    public BaseResponse getTransactionByHash(JsonRpcRequest info, Client client)
+            throws BcosNodeProxyException {
+        log.info("start getTransactionByHash");
+        List<Object> params = info.getParams();
+        if (params.size() != 2) {
+            log.error("the size of `JsonRpcRequest.params` should be 2");
+            throw new BcosNodeProxyException(ConstantCode.PARAM_EXCEPTION);
+        }
+        BaseResponse baseResponse = new BaseResponse(ConstantCode.SUCCESS);
+        String data = (String) params.get(1);
+        BcosTransaction transaction = client.getTransactionByHash(data);
+        JsonRpcResponse jsonRpcResponse = new JsonRpcResponse();
+        jsonRpcResponse.setId(info.getId());
+        jsonRpcResponse.setJsonrpc(info.getJsonrpc());
+        jsonRpcResponse.setResult(transaction.getResult());
+        baseResponse.setData(jsonRpcResponse);
+        return baseResponse;
+    }
+
+    /** getTransactionReceipt. */
+    public BaseResponse getTransactionReceipt(JsonRpcRequest info, Client client)
+            throws BcosNodeProxyException {
+        log.info("start getTransactionReceipt");
+        List<Object> params = info.getParams();
+        if (params.size() != 2) {
+            log.error("the size of `JsonRpcRequest.params` should be 2");
+            throw new BcosNodeProxyException(ConstantCode.PARAM_EXCEPTION);
+        }
+        BaseResponse baseResponse = new BaseResponse(ConstantCode.SUCCESS);
+        String data = (String) params.get(1);
+        BcosTransactionReceipt receipt = client.getTransactionReceipt(data);
+        JsonRpcResponse jsonRpcResponse = new JsonRpcResponse();
+        jsonRpcResponse.setId(info.getId());
+        jsonRpcResponse.setJsonrpc(info.getJsonrpc());
+        jsonRpcResponse.setResult(receipt.getResult());
         baseResponse.setData(jsonRpcResponse);
         return baseResponse;
     }

@@ -45,13 +45,13 @@ public class RPCController extends BaseController {
     private ConcurrentHashMap<Integer, Client> groupToClient = new ConcurrentHashMap<>();
 
     @PostMapping(value = "/v1")
-    public BaseResponse sendRPC(@RequestBody @Valid JsonRpcRequest info, BindingResult result)
+    public BaseResponse rpcRequest(@RequestBody @Valid JsonRpcRequest info, BindingResult result)
             throws BcosNodeProxyException {
         checkBindResult(result);
         BaseResponse baseResponse;
         Instant startTime = Instant.now();
         log.info(
-                "start sendRPC. startTime:{} rpc request info:{}",
+                "start rpcRequest. startTime:{} rpc request info:{}",
                 startTime.toEpochMilli(),
                 JacksonUtils.objToString(info));
 
@@ -77,13 +77,17 @@ public class RPCController extends BaseController {
             baseResponse = rpcService.sendRawTransaction(info, client);
         } else if (method.equals("call")) {
             baseResponse = rpcService.call(info, client);
+        } else if (method.equals("getTransactionByHash")) {
+            baseResponse = rpcService.getTransactionByHash(info, client);
+        } else if (method.equals("getTransactionReceipt")) {
+            baseResponse = rpcService.getTransactionReceipt(info, client);
         } else {
             log.error("invalid method");
             throw new BcosNodeProxyException(ConstantCode.INVALID_RPC_METHOD);
         }
 
         log.info(
-                "end sendRPC. useTime:{} result:{}",
+                "end rpcRequest. useTime:{} result:{}",
                 Duration.between(startTime, Instant.now()).toMillis(),
                 JacksonUtils.objToString(baseResponse));
         return baseResponse;
