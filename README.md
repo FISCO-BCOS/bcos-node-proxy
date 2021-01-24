@@ -158,10 +158,10 @@ try to stop server org.fisco.bcos.proxy.Application
 }
 ```
 
-#### 1.1.5 RPC方法名说明
+#### 1.1.5 RPC方法名及传参说明
 
 | method                | param id | param type | param content            |
-| --------------------- | -------- | ---------- |
+| --------------------- | -------- | ---------- | ------------------------ |
 | getClientVersion      | 1        | Integer    | 群组 id                  |
 | getBlockNumber        | 1        | Integer    | 群组 id                  |
 | sendRawTransaction    | 1        | Integer    | 群组 id                  |
