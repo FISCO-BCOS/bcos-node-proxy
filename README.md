@@ -1,6 +1,6 @@
 # bcos-node-proxy
 
-FISCO BCOS 节点接入服务。Android/iOS 应用部署 proxy 后，Android/iOS 应用通过 http/https 请求 proxy，进而与节点进行通信。proxy 目前不支持涉及节点推送的相关特性。
+Bcos-node-proxy 作为 FISCO-BCOS 节点的接入代理，负责接收来自 Android/iOS sdk 等 http/https 请求，再以 ChannelMessage 协议向节点转发相关信息，节点的信息回复也通过 proxy 返回到 Android/iOS sdk。
 
 ## 部署操作
 
@@ -91,7 +91,7 @@ try to stop server org.fisco.bcos.proxy.Application
 | 序号 | 请求body | 类型     | 可为空 | 备注                                   |
 | --- | -------- | ------- | ----- | ------------------------------------- |
 | 1   | jsonrpc  | String  | 否    | jsonrpc版本，当前为2.0                   |
-| 2   | method   | String  | 否    | jsonrpc方法名                           |
+| 2   | method   | String  | 否    | jsonrpc方法名（目前支持6种，1.1.5说明）  |
 | 3   | params   | List    | 否    | 请求内容列表（第一个内容为群组id)           |
 | 4   | id       | Integer | 否    | jsonrpc序号                             |
 
@@ -113,30 +113,6 @@ try to stop server org.fisco.bcos.proxy.Application
 `https://127.0.0.1:8170/Bcos-node-proxy/rpc/v1`
 
 ```
-// 调用合约写函数
-{
-    "jsonrpc": "2.0",
-    "method": "sendRawTransaction",
-    "params": [
-        1,
-        "0xf8ef9f65f0d06e39dc3c08e32ac10a5070858962bc6c0f5760baca823f2d5582d03f85174876e7ff8609184e729fff82020394d6f1a71052366dbae2f7ab2d5d5845e77965cf0d80b86448f85bce000000000000000000000000000000000000000000000000000000000000001bf5bd8a9e7ba8b936ea704292ff4aaa5797bf671fdc8526dcd159f23c1f5a05f44e9fa862834dc7cb4541558f2b4961dc39eaaf0af7f7395028658d0e01b86a371ca00b2b3fabd8598fefdda4efdb54f626367fc68e1735a8047f0f1c4f840255ca1ea0512500bc29f4cfe18ee1c88683006d73e56c934100b8abf4d2334560e1d2f75e"
-    ],
-    "id": 1
-}
-// 调用合约读函数
-{
-    "jsonrpc": "2.0",
-    "method": "call",
-    "params": [
-        1,
-        {
-            "from": "0x0fc3c4bb89bd90299db4c62be0174c4966286c00",
-            "to": "0x474d2d0e726f2f73ad40d2ed52bc2c82153bd0c1",
-            "data": "0xd51033db"
-        }
-    ],
-    "id": 2
-}
 // 查询节点信息
 {
     "jsonrpc": "2.0",
@@ -151,60 +127,6 @@ try to stop server org.fisco.bcos.proxy.Application
 * 成功：
 
 ```
-// 调用合约写函数
-{
-    "code": 0,
-    "message": "Success",
-    "data": {
-        "id": 1,
-        "jsonrpc": "2.0",
-        "result": {
-            "blockHash": "0x1810d41ee8cf3e1ac423d08d6ee84164353e23407ec0acad5da4e008118678e7",
-            "blockNumber": "0x472",
-            "contractAddress": "0x0000000000000000000000000000000000000000",
-            "from": "0x0fc3c4bb89bd90299db4c62be0174c4966286c00",
-            "gasUsed": "0xab6a",
-            "input": "0x7c1bf3c50000000000000000000000000000000000000000000000000000000000000014",
-            "logs": [
-                {
-                    "address": "0x6a2a4699a7ac3f963c6026184850ebc28ec8ea6a",
-                    "blockNumber": null,
-                    "data": "0x0000000000000000000000000fc3c4bb89bd90299db4c62be0174c4966286c000000000000000000000000000000000000000000000000000000000000000014",
-                    "topics": [
-                        "0xaca9a02cfe513f3f88c54a860469369849c8fa0a2119a8d1f3f75c67ac0c9547"
-                    ]
-                }
-            ],
-            "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000080000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000400000",
-            "message": null,
-            "output": "0x0000000000000000000000000000000000000000000000000000000000000015",
-            "receiptProof": null,
-            "root": "0xc1c2231fb86a2e7351a810e1462553b5d6561f305e7362392326f0ac644c1d27",
-            "status": "0x0",
-            "statusMsg": "None",
-            "to": "0x6a2a4699a7ac3f963c6026184850ebc28ec8ea6a",
-            "transactionHash": "0x802f83a1ccd78f345daea3c8edb289fb3068bc565693439fa5ba6f0d570a4566",
-            "transactionIndex": "0x0",
-            "txProof": null,
-            "statusOK": true
-        },
-        "error": null
-    }
-}
-// 调用合约读函数
-{
-    "code": 0,
-    "message": "Success",
-    "data": {
-        "id": 2,
-        "jsonrpc": "2.0",
-        "result": [
-            1,
-            "2"
-        ]
-    },
-    "error": null
-}
 // 查询节点信息
 {
     "code": 0,
@@ -236,7 +158,25 @@ try to stop server org.fisco.bcos.proxy.Application
 }
 ```
 
-## <span id="2">2 返回码说明</span>
+#### 1.1.5 RPC方法名说明
+
+| method                | param id | param type | param content            |
+| --------------------- | -------- | ---------- |
+| getClientVersion      | 1        | Integer    | 群组 id                  |
+| getBlockNumber        | 1        | Integer    | 群组 id                  |
+| sendRawTransaction    | 1        | Integer    | 群组 id                  |
+|                       | 2        | String     | 签名的交易数据（0x开头） |
+| call                  | 1        | Integer    | 群组 id                  |
+|                       | 2        | Object     | 交易                     |
+|                       | 2.1      | String     | 交易发送方               |
+|                       | 2.2      | String     | 合约地址                 |
+|                       | 2.3      | String     | 交易数据（0x开头）       |
+| getTransactionByHash  | 0        | Integer    | 群组 id                  |
+|                       | 1        | String     | 交易 hash                |
+| getTransactionReceipt | 0        | Integer    | 群组 id                  |
+|                       | 1        | Integer    | 交易 hash                |
+
+### <span id="2">2 返回码说明</span>
 
 | code   | message                                                         | 
 | ------ | --------------------------------------------------------------- |
