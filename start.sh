@@ -4,10 +4,10 @@ dirpath="$(cd "$(dirname "$0")" && pwd)"
 cd $dirpath
 
 APP_MAIN=org.fisco.bcos.proxy.Application
-CLASSPATH='conf/:apps/*:lib/*'
+CLASSPATH='conf/:conf/asServer/:apps/*:lib/*'
 CURRENT_DIR=$(pwd)/
 LOG_DIR=${CURRENT_DIR}log
-CONF_DIR=${CURRENT_DIR}conf
+CONF_DIR=${CURRENT_DIR}conf/asServer
 
 SERVER_PORT=$(cat $CONF_DIR/application.yml| grep "port" | awk '{print $2}'| sed 's/\r//')
 if [ ${SERVER_PORT}"" = "" ];then

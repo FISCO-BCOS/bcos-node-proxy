@@ -2,7 +2,7 @@
 
 [cryptoMaterial]
 
-certPath = "conf"                           # The certification path  
+certPath = "conf/asClient"                           # The certification path
 
 # The following configurations take the certPath by default if commented
 # caCert = "conf/ca.crt"                    # CA cert file path

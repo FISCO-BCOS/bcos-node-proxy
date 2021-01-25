@@ -24,6 +24,7 @@ import org.fisco.bcos.proxy.base.controller.BaseController;
 import org.fisco.bcos.proxy.base.entity.BaseResponse;
 import org.fisco.bcos.proxy.base.exception.BcosNodeProxyException;
 import org.fisco.bcos.proxy.base.tools.JacksonUtils;
+import org.fisco.bcos.proxy.rpc.entity.JsonRpcMethods;
 import org.fisco.bcos.proxy.rpc.entity.JsonRpcRequest;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.BcosSDKException;
@@ -69,17 +70,17 @@ public class RPCController extends BaseController {
         Client client = getClientByGroupId(groupId);
         String method = info.getMethod();
 
-        if (method.equals("getClientVersion")) {
+        if (method.equals(JsonRpcMethods.GET_NODE_VERSION)) {
             baseResponse = rpcService.getClientVersion(info, client);
-        } else if (method.equals("getBlockNumber")) {
+        } else if (method.equals(JsonRpcMethods.GET_BLOCK_NUMBER)) {
             baseResponse = rpcService.getBlockNumber(info, client);
-        } else if (method.equals("sendRawTransaction")) {
+        } else if (method.equals(JsonRpcMethods.SEND_RAWTRANSACTION)) {
             baseResponse = rpcService.sendRawTransaction(info, client);
-        } else if (method.equals("call")) {
+        } else if (method.equals(JsonRpcMethods.CALL)) {
             baseResponse = rpcService.call(info, client);
-        } else if (method.equals("getTransactionByHash")) {
+        } else if (method.equals(JsonRpcMethods.GET_TRANSACTION_BY_HASH)) {
             baseResponse = rpcService.getTransactionByHash(info, client);
-        } else if (method.equals("getTransactionReceipt")) {
+        } else if (method.equals(JsonRpcMethods.GET_TRANSACTIONRECEIPT)) {
             baseResponse = rpcService.getTransactionReceipt(info, client);
         } else {
             log.error("invalid method");
@@ -98,7 +99,7 @@ public class RPCController extends BaseController {
         final String configFile =
                 RPCController.class
                         .getClassLoader()
-                        .getResource(ConstantConfig.CONFIG_FILE_NAME)
+                        .getResource("asClient/" + ConstantConfig.CONFIG_FILE_NAME)
                         .getPath();
         bcosSDK = BcosSDK.build(configFile);
     }

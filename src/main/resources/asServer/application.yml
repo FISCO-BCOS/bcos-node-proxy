@@ -8,6 +8,6 @@ server:
 
 #log config
 logging:
-  config: classpath:log4j2ForProxy.xml
+  config: classpath:log4j2.xml
   level:
     org.fisco.bcos.proxy: info
