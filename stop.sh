@@ -5,7 +5,7 @@ cd $dirpath
 
 APP_MAIN=org.fisco.bcos.proxy.Application
 CURRENT_DIR=$(pwd)/
-CONF_DIR=${CURRENT_DIR}conf
+CONF_DIR=${CURRENT_DIR}conf/asServer
 
 SERVER_PORT=$(cat $CONF_DIR/application.yml| grep "port" | awk '{print $2}'| sed 's/\r//')
 if [ ${SERVER_PORT}"" = "" ];then

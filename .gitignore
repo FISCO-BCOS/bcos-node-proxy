@@ -24,6 +24,10 @@ hs_err_pid*
 
 # other
 .idea/
+.classpath
+.project
+.settings/
+bin/
 .DS_Store
 .gradle/
 dist/

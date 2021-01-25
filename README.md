@@ -1,6 +1,10 @@
 # bcos-node-proxy
 
-Bcos-node-proxy 作为 FISCO-BCOS 节点的接入代理，负责接收来自 Android/iOS sdk 等 http/https 请求，再以 ChannelMessage 协议向节点转发相关信息，节点的信息回复也通过 proxy 返回到 Android/iOS sdk。
+Bcos-node-proxy 作为 FISCO-BCOS 节点的接入代理，负责接收来自 Android/iOS sdk 等 http/https 请求，再以 ChannelMessage 协议向节点转发相关信息，节点的信息回复也通过 proxy 返回到 Android/iOS sdk。Proxy 一方面作为客户端与区块链节点进行通信，另一方面作为服务端监听 sdk 应用的请求。
+
+```
+Android/iOS sdk <---http/https---> bcos-node-proxy <---channel---> FISCO BCOS node
+```
 
 ## 部署操作
 
@@ -38,9 +42,24 @@ git clone https://github.com/FISCO-BCOS/bcos-node-proxy.git && cd bcos-node-prox
 cp -r conf_template conf
 ```
 
-（2）Proxy 作为服务端，需配置`application.yml`，默认监听端口为`8170`。
+（2）Proxy 作为服务端，默认监听端口为`8170`，该端口配置位于文件`conf/asServer/application.yml`，
 
-（3）Proxy 引入了`fisco-bcos-java-sdk`与节点通信，需配置`config.toml`中的节点地址，以及添加 sdk 证书到该目录下。
+（3）Proxy 作为客户端，通过引入`fisco-bcos-java-sdk`与节点通信，需配置`conf/asClient/config.toml`中的节点`Ip 和 Port`，以及添加 sdk（`ca.crt`、`sdk.crt`和`sdk.key`） 证书到`conf/asClient`目录下。
+
+修改配置后，`conf`目录内容如下：
+
+```
+.
+├── asClient
+│   ├── ca.crt
+│   ├── config.toml
+│   ├── log4j.properties
+│   ├── sdk.crt
+│   └── sdk.key
+└── asServer
+      ├── application.yml
+      └── log4j2.xml
+```
 
 #### 4.2 服务启停及状态检查
 
