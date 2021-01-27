@@ -99,7 +99,7 @@ try to stop server org.fisco.bcos.proxy.Application
 
 #### 1.1.1 传输协议规范
 
-* 网络传输协议：使用HTTPS协议
+* 网络传输协议：使用HTTP协议
 * 请求地址：`/rpc/v1/`
 * 请求方式：POST
 * 请求头：Content-type: application/json
@@ -129,7 +129,7 @@ try to stop server org.fisco.bcos.proxy.Application
 
 #### 1.1.3 入参示例
 
-`https://127.0.0.1:8170/Bcos-node-proxy/rpc/v1`
+`http://127.0.0.1:8170/Bcos-node-proxy/rpc/v1`
 
 ```
 // 查询节点信息
