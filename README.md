@@ -6,6 +6,11 @@ Bcos-node-proxy 作为 FISCO-BCOS 节点的接入代理，负责接收来自 And
 Android/iOS sdk <---http/https---> bcos-node-proxy <---channel---> FISCO BCOS node
 ```
 
+说明：
+1. 用户使用`Bcos-node-proxy`前需搭建 FISCO-BCOS 区块链，具体搭建方法可参考[文档](https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/installation.html);
+2. `Bcos-node-proxy`已实现：交易发送（部署合约、调用合约）、查询节点二进制版本信息、查询块高、基于交易 hash 查询交易内容，以及基于交易 hash 查询交易回执；
+3. `Bcos-node-proxy`尚不支持块高推送、事件推送、交易推送和 AMOP 通信等相关节点推送功能。 
+
 ## 部署操作
 
 ### 1. 前提条件
