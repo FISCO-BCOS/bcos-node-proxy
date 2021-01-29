@@ -15,10 +15,29 @@ if [ ${SERVER_PORT}"" = "" ];then
     exit -1
 fi
 
-if [ ${JAVA_HOME}"" = "" ];then
-    echo "JAVA_HOME has not been configured"
-    exit -1
-fi
+function check_java(){
+   version=$(java -version 2>&1 |grep version |awk '{print $3}')
+   len=${#version}-2
+   version=${version:1:len}
+
+   IFS='.' arr=($version)
+   IFS=' '
+   if [ -z ${arr[0]} ];then
+      LOG_ERROR "At least Java8 is required."
+      exit 1
+   fi
+   if [ ${arr[0]} -eq 1 ];then
+      if [ ${arr[1]} -lt 8 ];then
+           LOG_ERROR "At least Java8 is required."
+           exit 1
+      fi
+   elif [ ${arr[0]} -gt 8 ];then
+          :
+   else
+       LOG_ERROR "At least Java8 is required."
+       exit 1
+   fi
+}
 
 mkdir -p log
 
@@ -43,6 +62,8 @@ JAVA_OPTS+=" -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${LOG_DIR}/heap_er
 
 
 start(){
+    check_java
+
     echo "try to start server $APP_MAIN"
     recordTime=`date "+%Y-%m-%d %H:%M:%S"`
     echo "[ $recordTime ] try to start server $APP_MAIN" >> record.log
@@ -50,7 +71,7 @@ start(){
     if [ $processStatus == 1 ]; then
         echo "    server $APP_MAIN is running, pid is $processPid."
     else
-        nohup $JAVA_HOME/bin/java -Djdk.tls.namedGroups="secp256k1" $JAVA_OPTS -cp $CLASSPATH $APP_MAIN >> $LOG_DIR/proxy.out 2>&1 &
+        nohup java -Djdk.tls.namedGroups="secp256k1" $JAVA_OPTS -cp $CLASSPATH $APP_MAIN >> $LOG_DIR/proxy.out 2>&1 &
         
         count=1
         result=0
