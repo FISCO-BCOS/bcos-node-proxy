@@ -23,7 +23,6 @@ def springboot_version="2.3.1.RELEASE"
 List springboot = [
      "org.springframework.boot:spring-boot-starter-web:$springboot_version",
      "org.springframework.boot:spring-boot-starter-log4j2:$springboot_version",
-//     "org.springframework.boot:spring-boot-starter-security:$springboot_version",
      "org.springframework.boot:spring-boot-starter-validation:$springboot_version"
 ]
 
@@ -40,7 +39,6 @@ dependencies {
     compile springboot
     compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2"
     compile "org.apache.commons:commons-lang3:3.10"
-//    compile "mysql:mysql-connector-java:8.0.13"
     compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
     compile 'org.fisco-bcos.java-sdk:java-sdk:2.7.0'
 
