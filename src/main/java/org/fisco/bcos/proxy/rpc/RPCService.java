@@ -169,4 +169,38 @@ public class RPCService {
         baseResponse.setData(jsonRpcResponse);
         return baseResponse;
     }
+
+    /** getNodeIDList. */
+    public BaseResponse getNodeIDList(JsonRpcRequest info, Client client)
+            throws BcosNodeProxyException {
+        log.info("start getNodeIDList");
+        BaseResponse baseResponse = new BaseResponse(ConstantCode.SUCCESS);
+        NodeIDList nodeIDList = client.getNodeIDList();
+        JsonRpcResponse jsonRpcResponse = new JsonRpcResponse();
+        jsonRpcResponse.setId(info.getId());
+        jsonRpcResponse.setJsonrpc(info.getJsonrpc());
+        jsonRpcResponse.setResult(nodeIDList.getResult());
+        baseResponse.setData(jsonRpcResponse);
+        return baseResponse;
+    }
+
+    /** getSystemConfigByKey. */
+    public BaseResponse getSystemConfigByKey(JsonRpcRequest info, Client client)
+            throws BcosNodeProxyException {
+        log.info("start getSystemConfigByKey");
+        List<Object> params = info.getParams();
+        if (params.size() != 2) {
+            log.error("the size of `JsonRpcRequest.params` should be 2");
+            throw new BcosNodeProxyException(ConstantCode.PARAM_EXCEPTION);
+        }
+        BaseResponse baseResponse = new BaseResponse(ConstantCode.SUCCESS);
+        String data = (String) params.get(1);
+        SystemConfig systemConfig = client.getSystemConfigByKey(data);
+        JsonRpcResponse jsonRpcResponse = new JsonRpcResponse();
+        jsonRpcResponse.setId(info.getId());
+        jsonRpcResponse.setJsonrpc(info.getJsonrpc());
+        jsonRpcResponse.setResult(systemConfig.getResult());
+        baseResponse.setData(jsonRpcResponse);
+        return baseResponse;
+    }
 }
