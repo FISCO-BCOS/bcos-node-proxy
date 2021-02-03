@@ -86,6 +86,10 @@ public class RPCController extends BaseController {
             baseResponse = rpcService.getSealerList(info, client);
         } else if (method.equals(JsonRpcMethods.GET_OBSERVER_LIST)) {
             baseResponse = rpcService.getObserverList(info, client);
+        } else if (method.equals(JsonRpcMethods.GET_NODEIDLIST)) {
+            baseResponse = rpcService.getNodeIDList(info, client);
+        } else if (method.equals(JsonRpcMethods.GET_SYSTEM_CONFIG_BY_KEY)) {
+            baseResponse = rpcService.getSystemConfigByKey(info, client);
         } else {
             log.error("invalid method");
             throw new BcosNodeProxyException(ConstantCode.INVALID_RPC_METHOD);
