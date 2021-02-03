@@ -23,4 +23,7 @@ public class JsonRpcMethods {
     public static final String CALL = "call";
     public static final String GET_TRANSACTION_BY_HASH = "getTransactionByHash";
     public static final String GET_TRANSACTIONRECEIPT = "getTransactionReceipt";
+
+    public static final String GET_SEALER_LIST = "getSealerList";
+    public static final String GET_OBSERVER_LIST = "getObserverList";
 }

@@ -23,10 +23,7 @@ import org.fisco.bcos.proxy.rpc.entity.JsonRpcRequest;
 import org.fisco.bcos.proxy.rpc.entity.JsonRpcResponse;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.client.protocol.request.Transaction;
-import org.fisco.bcos.sdk.client.protocol.response.BcosTransaction;
-import org.fisco.bcos.sdk.client.protocol.response.BcosTransactionReceipt;
-import org.fisco.bcos.sdk.client.protocol.response.BlockNumber;
-import org.fisco.bcos.sdk.client.protocol.response.Call;
+import org.fisco.bcos.sdk.client.protocol.response.*;
 import org.fisco.bcos.sdk.model.NodeVersion;
 import org.fisco.bcos.sdk.model.TransactionReceipt;
 import org.springframework.stereotype.Service;
@@ -141,6 +138,34 @@ public class RPCService {
         jsonRpcResponse.setId(info.getId());
         jsonRpcResponse.setJsonrpc(info.getJsonrpc());
         jsonRpcResponse.setResult(receipt.getResult());
+        baseResponse.setData(jsonRpcResponse);
+        return baseResponse;
+    }
+
+    /** getSealerList. */
+    public BaseResponse getSealerList(JsonRpcRequest info, Client client)
+            throws BcosNodeProxyException {
+        log.info("start getSealerList");
+        BaseResponse baseResponse = new BaseResponse(ConstantCode.SUCCESS);
+        SealerList sealerList = client.getSealerList();
+        JsonRpcResponse jsonRpcResponse = new JsonRpcResponse();
+        jsonRpcResponse.setId(info.getId());
+        jsonRpcResponse.setJsonrpc(info.getJsonrpc());
+        jsonRpcResponse.setResult(sealerList.getResult());
+        baseResponse.setData(jsonRpcResponse);
+        return baseResponse;
+    }
+
+    /** getObserverList. */
+    public BaseResponse getObserverList(JsonRpcRequest info, Client client)
+            throws BcosNodeProxyException {
+        log.info("start getObserverList");
+        BaseResponse baseResponse = new BaseResponse(ConstantCode.SUCCESS);
+        ObserverList observerList = client.getObserverList();
+        JsonRpcResponse jsonRpcResponse = new JsonRpcResponse();
+        jsonRpcResponse.setId(info.getId());
+        jsonRpcResponse.setJsonrpc(info.getJsonrpc());
+        jsonRpcResponse.setResult(observerList.getResult());
         baseResponse.setData(jsonRpcResponse);
         return baseResponse;
     }
