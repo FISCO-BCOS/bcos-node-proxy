@@ -82,14 +82,14 @@ public class RPCController extends BaseController {
             baseResponse = rpcService.getTransactionByHash(info, client);
         } else if (method.equals(JsonRpcMethods.GET_TRANSACTIONRECEIPT)) {
             baseResponse = rpcService.getTransactionReceipt(info, client);
-        } else if (method.equals(JsonRpcMethods.GET_SEALER_LIST)) {
+        /*} else if (method.equals(JsonRpcMethods.GET_SEALER_LIST)) {
             baseResponse = rpcService.getSealerList(info, client);
         } else if (method.equals(JsonRpcMethods.GET_OBSERVER_LIST)) {
             baseResponse = rpcService.getObserverList(info, client);
         } else if (method.equals(JsonRpcMethods.GET_NODEIDLIST)) {
             baseResponse = rpcService.getNodeIDList(info, client);
         } else if (method.equals(JsonRpcMethods.GET_SYSTEM_CONFIG_BY_KEY)) {
-            baseResponse = rpcService.getSystemConfigByKey(info, client);
+            baseResponse = rpcService.getSystemConfigByKey(info, client);*/
         } else {
             log.error("invalid method");
             throw new BcosNodeProxyException(ConstantCode.INVALID_RPC_METHOD);
