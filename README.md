@@ -1,6 +1,6 @@
 # bcos-node-proxy
 
-Bcos-node-proxy 作为 FISCO-BCOS 节点的接入代理，负责接收来自 Android/iOS SDK 的 http 请求，再通过 ChannelMessage 协议向节点转发相关信息。节点的信息回复也经由 proxy 返回到 Android/iOS SDK。Proxy 一方面监听 Android/iOS SDK 的 http 请求，另一方面与区块链节点进行通信。
+Bcos-node-proxy 作为 FISCO-BCOS 节点的接入代理，负责接受 Android/iOS 终端 SDK 的 http/https 连接，对请求的内容进行解析，并通过内置的 java-sdk 走 ChannelMessage 协议向节点进行转发。Bcos-node-proxy 层本身是无状态的，实践中可以启动多个 Bcos-node-proxy 实例，通过负载均衡组件（如 LVS、HAProxy 或 F5）对外提供统一的接入地址，终端 SDK 的 http/https 请求可以均匀地分摊在多个 Bcos-node-proxy 实例上以达到负载均衡的效果。Bcos-node-proxy 本身并不存储数据，只是解析终端 SDK 的请求，将实际的数据读取请求/交易请求转发给底层的 FISCO-BCOS 节点。进一步的，Bcos-node-proxy 对请求中的上链操作（部署合约、调用合约写接口），进行了异步请求转同步的实现。
 
 ![](./architecture.png)
 
@@ -314,11 +314,12 @@ nginx.key nginx.csr nginx.crt
     }
 ```
 
-在`server`中添加以下内容，指定 Nginx 监听端口、启用 SSL 服务、证书位置。
+在`server`中添加以下内容，指定 Nginx 监听端口、启用 SSL 服务、单向验证（不需启动双向验证）证书位置。
 
 ```text
     server {
-        listen       8180 ssl;
+        listen       8181;            # 监听 http 请求的端口
+        listen       8180 ssl;        # 监听 https 请求的端口
         server_name  localhost;
 
         ssl_certificate      /data/home/app/nginx/ssl/nginx.crt;
