@@ -19,7 +19,7 @@ repositories {
     mavenCentral()
 }
 
-def springboot_version="2.3.1.RELEASE"
+def springboot_version="2.3.9.RELEASE"
 List springboot = [
      "org.springframework.boot:spring-boot-starter-web:$springboot_version",
      "org.springframework.boot:spring-boot-starter-log4j2:$springboot_version",
@@ -27,25 +27,18 @@ List springboot = [
 ]
 
 List lombok = [
-    "org.projectlombok:lombok:1.18.12"
+    "org.projectlombok:lombok:1.18.18"
 ]
-
-List test = [
-    "org.springframework.boot:spring-boot-starter-test:$springboot_version"
-]
-
 
 dependencies {
     compile springboot
-    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2"
-    compile "org.apache.commons:commons-lang3:3.10"
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4"
+    compile "org.apache.commons:commons-lang3:3.12.0"
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
     compile 'org.fisco-bcos.java-sdk:java-sdk:2.7.0'
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.18'
     compile lombok
-
-    testCompile test
 }
 
 configurations {
