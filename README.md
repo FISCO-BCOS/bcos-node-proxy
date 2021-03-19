@@ -8,6 +8,6 @@ bcos-node-proxy 作为 FISCO-BCOS 节点的接入代理，负责接受 Android/i
 - 查询节点二进制版本信息（getClientVersion）
 - 查询块高（getBlockNumber）
 - 基于交易 hash 查询交易内容（getTransactionByHash）
-- 以及基于交易 hash 查询交易回执（getTransactionReceipt）
+- 基于交易 hash 查询交易回执（getTransactionReceipt）
 
-关于 bcos-node-proxy 的部署流程及接口说明，请看考[详细文档](https://fisco-bcos-doc-chaychen.readthedocs.io/en/feature-java-sdk/docs/manual/bcos_node_proxy.html)。
+关于 bcos-node-proxy 的部署流程及接口说明，请看考[详细文档](https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/manual/bcos_node_proxy.html)。
