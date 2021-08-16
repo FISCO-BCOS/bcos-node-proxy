@@ -4,7 +4,7 @@
 server:
   port: 8170
   servlet:
-    context-path: /Bcos-node-proxy
+    context-path: /bcos-node-proxy
 
 #log config
 logging:
