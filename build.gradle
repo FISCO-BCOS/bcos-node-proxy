@@ -14,12 +14,11 @@ targetCompatibility = 1.8
 // In this section you declare where to find the dependencies of your project
 repositories {
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
-    maven { url 'https://dl.bintray.com/ethereum/maven/' }
     mavenLocal()
     mavenCentral()
 }
 
-def springboot_version="2.3.9.RELEASE"
+def springboot_version="2.4.4"
 List springboot = [
      "org.springframework.boot:spring-boot-starter-web:$springboot_version",
      "org.springframework.boot:spring-boot-starter-log4j2:$springboot_version",
